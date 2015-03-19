@@ -133,9 +133,9 @@ static dispatch_once_t AZ_DefaultCalendarIdentifierLock_onceToken;
 
 - (BOOL)isSameWeekAsDate:(NSDate *) aDate {
     NSCalendar *calendar = [NSDate AZ_currentCalendar];
-    NSDateComponents *components1 = [calendar components:NSWeekCalendarUnit fromDate:self];
-    NSDateComponents *components2 = [calendar components:NSWeekCalendarUnit fromDate:aDate];
-    if (components1.week != components2.week) {
+    NSDateComponents *components1 = [calendar components:NSWeekOfMonthCalendarUnit fromDate:self];
+    NSDateComponents *components2 = [calendar components:NSWeekOfMonthCalendarUnit fromDate:aDate];
+    if (components1.weekOfMonth != components2.weekOfMonth) {
         return NO;
     }
     return (fabs([self timeIntervalSinceDate:aDate]) < (SECONDS_IN_DAY * DAYS_IN_WEEK));
@@ -324,15 +324,15 @@ static dispatch_once_t AZ_DefaultCalendarIdentifierLock_onceToken;
 - (NSDate *)dateAtStartOfWeek
 {
     NSDate *startOfWeek = nil;
-    [[NSDate AZ_currentCalendar] rangeOfUnit:NSWeekCalendarUnit startDate:&startOfWeek interval:NULL forDate:self];
+    [[NSDate AZ_currentCalendar] rangeOfUnit:NSWeekOfMonthCalendarUnit startDate:&startOfWeek interval:NULL forDate:self];
     return startOfWeek;
 }
 
 - (NSDate *)dateAtEndOfWeek
 {
     NSCalendar *calendar = [NSDate AZ_currentCalendar];
-    NSDateComponents *components = [calendar components:NSYearForWeekOfYearCalendarUnit | NSYearCalendarUnit | NSMonthCalendarUnit | NSWeekdayCalendarUnit | NSWeekCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:self];
-    NSRange range = [calendar rangeOfUnit:NSDayCalendarUnit inUnit:NSWeekCalendarUnit forDate:self];
+    NSDateComponents *components = [calendar components:NSYearForWeekOfYearCalendarUnit | NSYearCalendarUnit | NSMonthCalendarUnit | NSWeekdayCalendarUnit | NSWeekOfMonthCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:self];
+    NSRange range = [calendar rangeOfUnit:NSDayCalendarUnit inUnit:NSWeekOfMonthCalendarUnit forDate:self];
     components.weekday = range.length;
     return [calendar dateFromComponents:components];
 }
@@ -487,9 +487,14 @@ static dispatch_once_t AZ_DefaultCalendarIdentifierLock_onceToken;
     return [components month];
 }
 
-- (NSInteger)week {
-    NSDateComponents *components = [[NSDate AZ_currentCalendar] components:NSWeekCalendarUnit fromDate:self];
-    return [components week];
+- (NSInteger)weekOfMonth {
+    NSDateComponents *components = [[NSDate AZ_currentCalendar] components:NSWeekOfMonthCalendarUnit fromDate:self];
+    return [components weekOfMonth];
+}
+
+- (NSInteger)weekOfYear {
+    NSDateComponents *components = [[NSDate AZ_currentCalendar] components:NSWeekOfYearCalendarUnit fromDate:self];
+    return [components weekOfYear];
 }
 
 - (NSInteger)weekday {
@@ -501,7 +506,7 @@ static dispatch_once_t AZ_DefaultCalendarIdentifierLock_onceToken;
 - (NSInteger)firstDayOfWeekday {
     NSDate *startOfTheWeek;
     NSTimeInterval interval;
-    [[NSDate AZ_currentCalendar] rangeOfUnit:NSWeekCalendarUnit
+    [[NSDate AZ_currentCalendar] rangeOfUnit:NSWeekOfMonthCalendarUnit
                                  startDate:&startOfTheWeek
                                  interval:&interval
                                  forDate:self];

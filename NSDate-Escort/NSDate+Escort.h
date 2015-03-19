@@ -163,7 +163,8 @@
 @property(readonly) NSInteger seconds;
 @property(readonly) NSInteger day;
 @property(readonly) NSInteger month;
-@property(readonly) NSInteger week;
+@property(readonly) NSInteger weekOfMonth;
+@property(readonly) NSInteger weekOfYear;
 //  in the Gregorian calendar, n is 7 and Sunday is represented by 1.
 @property(readonly) NSInteger weekday;
 @property(readonly) NSInteger firstDayOfWeekday;
