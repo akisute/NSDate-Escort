@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name         = "NSDate-Escort"
-  s.version      = "1.4.1"
+  s.version      = "1.4.2"
   s.summary      = "A NSDate utility library that is compatible with NSDate-Extensions API."
   s.homepage     = "https://github.com/akisute/NSDate-Escort"
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
